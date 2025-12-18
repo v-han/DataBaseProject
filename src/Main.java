@@ -21,14 +21,9 @@ public class Main {
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
 
-        try {
-            DataBase.getConnect();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        DataBase.getConnect();
 
-
-        for (JButton button : DataBase.getBigScoreButton(frame))
+        for (JButton button : Controller.getBigScoreButton(frame))
         {
             innerPanel.add(button);
         }
