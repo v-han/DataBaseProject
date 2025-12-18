@@ -4,8 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 class DataBase {
-    DataBase() {
-    }
 
     //数据库的信息
     private static String url = "jdbc:opengauss://127.0.0.1:55433/forproject";

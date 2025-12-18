@@ -8,6 +8,43 @@ class Controller{
     private static final Dimension BUTTON_SIZE = new Dimension(380, 40);
     private static final Dimension SCREEN_SIZE = new Dimension(400, 300);
 
+    //主函数的界面
+    public static void StartFrame() {
+        JFrame frame = new JFrame();
+
+        frame.setPreferredSize(SCREEN_SIZE);
+        frame.setMaximumSize(SCREEN_SIZE);
+        frame.setMinimumSize(SCREEN_SIZE);
+
+        //最下面的Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        //记录大比分的Panel
+        JPanel innerPanel = new JPanel();
+        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+
+        //链接数据库
+        DataBase.getConnect();
+
+        for (JButton button : getBigScoreButton(frame))
+        {
+            innerPanel.add(button);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(innerPanel);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        //底部区域的设计
+        JButton buttonInsert = getButtonInsertBSD(frame);
+
+        panel.add(buttonInsert, BorderLayout.SOUTH);
+
+        frame.add(panel);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
     //获得插入大比分数据的按钮
     public static JButton getButtonInsertBSD(JFrame frame) {
         JButton button = new JButton("插入数据");
@@ -359,7 +396,7 @@ class Controller{
                 JScrollPane scrollPane = new JScrollPane(innerPanel);
                 panel.add(scrollPane, BorderLayout.CENTER);
 
-                JButton buttonInsert = Controller.getButtonInsertPD(Playerdialog,FSSno);
+                JButton buttonInsert = getButtonInsertPD(Playerdialog,FSSno);
 
                 panel.add(buttonInsert, BorderLayout.SOUTH);
 
@@ -391,12 +428,15 @@ class Controller{
 
         ResultSet rs = DataBase.getPlayer(SSno);
 
-        String str;
+        String str,strRating;
+        double Rating;
 
         while (true) {
             try {
                 if (!rs.next()) break;
                 str = rs.getString("PName") + " " + rs.getString("Rating") + " " +rs.getString("ADR") + " " + rs.getString("KD");
+                strRating = rs.getString("Rating");
+                Rating = Double.parseDouble(strRating);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -405,7 +445,14 @@ class Controller{
 
             //按钮外观设计
             button.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));
-            button.setBackground(new Color(70, 130, 180));
+            if (Rating < 1) {
+                button.setBackground(new Color(255, 0, 0));
+            } else if  (Rating < 1.1) {
+                button.setBackground(new Color(197, 197, 197));
+            } else {
+                button.setBackground(new Color(85, 255, 0));
+            }
+
             button.setForeground(Color.WHITE);
             button.setPreferredSize(BUTTON_SIZE);
             button.setMaximumSize(BUTTON_SIZE);
