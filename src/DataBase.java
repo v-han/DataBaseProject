@@ -7,6 +7,7 @@ class DataBase {
     DataBase() {
     }
 
+    //数据库的信息
     private static String url = "jdbc:opengauss://127.0.0.1:55433/forproject";
     private static String user = "gaussdb";
     private static String password = "Ww@12345678";
@@ -91,7 +92,6 @@ class DataBase {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-
         }
 
         return buttons;
@@ -161,7 +161,6 @@ class DataBase {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-
         }
 
         return buttons;
@@ -173,6 +172,7 @@ class DataBase {
 
         JButton Topbutton =  new JButton("Pname   Rating   ADR   KD");
 
+        //顶部信息栏
         Topbutton.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));
         Topbutton.setBackground(new Color(70, 130, 180));
         Topbutton.setForeground(Color.WHITE);
@@ -211,9 +211,29 @@ class DataBase {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-
         }
 
         return buttons;
     }
+
+    //插入大比分数据
+    public static boolean InsertBigScoreData(String Team1, String Team2, String Format,String FinalScore) {
+        String sql = "INSERT INTO BigScoreData(Team1,Team2,Cfotmat,FinalScore) VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, Team1);
+            ps.setString(2, Team2);
+            ps.setString(3, Format);
+            ps.setString(4, FinalScore);
+            ps.executeUpdate(); // 执行插入
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
+//用于返回控件的类
+class Controller{
+
 }
